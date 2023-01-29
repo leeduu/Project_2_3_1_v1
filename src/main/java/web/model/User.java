@@ -1,13 +1,17 @@
 package web.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
     private int id;
+    @Column(name = "first_name")
     private String first_name;
+    @Column(name = "last_name")
     private String last_name;
+    @Column(name = "email")
     private String email;
 
     public User(String first_name, String last_name, String email, int id) {

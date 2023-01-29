@@ -1,13 +1,13 @@
 package web.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 import web.service.UserServiceImpl;
+
+import java.sql.SQLException;
 
 @Controller
 public class UserController {
@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping()   //показывает всех юзеров, по умолчанию
-    public String showUsers(Model model) {
+    public String showUsers(Model model) throws SQLException {
         model.addAttribute("showUsers", userService.showUsers());
     return "users";
     }
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/new")    //сохранение нового юзера и показ всех юзеров
-    public String newUser(@ModelAttribute("newUser")User user) {
+    public String newUser(@ModelAttribute("newUser")User user) throws SQLException {
         userService.save(user);
         return "redirect:/";
     }
