@@ -5,13 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.model.User;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    final UserDao userDao;
+    private final UserDao userDao;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -19,7 +18,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> showUsers() throws SQLException {
+    public List<User> showUsers() {
         return userDao.showUsers();
     }
 
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public void save(User user) throws SQLException {
+    public void save(User user) {
         userDao.save(user);
     }
 
