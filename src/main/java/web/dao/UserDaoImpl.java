@@ -11,11 +11,18 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
 //-----------------------
     @PersistenceContext
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
-    public UserDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    public UserDaoImpl(){}
+
+//    private EntityManagerFactory entityManagerFactory;
+//
+//    public UserDaoImpl(EntityManagerFactory entityManagerFactory) {
+//        this.entityManagerFactory = entityManagerFactory;
+//    }
+//
+//    EntityManager entityManager = entityManagerFactory.createEntityManager();
+//    EntityTransaction entityTransaction = entityManager.getTransaction();
 
     @Override
     public List<User> showUsers() {
@@ -24,9 +31,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User showUser(int id) {
-        TypedQuery<User> userToShow = entityManager.createQuery("select u from User u where u.id = :id", User.class);
-        userToShow.setParameter("id", id);
-        return userToShow.getResultList().stream().findAny().orElse(null);
+        return entityManager.find(User.class, id);
     }
 
     @Override
@@ -38,16 +43,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void update(int id, User user) {
-        entityManager.merge(user);
+        User userToUpdate = showUser(id);
+        userToUpdate.setFirst_name(user.getFirst_name());
+        userToUpdate.setLast_name(user.getLast_name());
+        userToUpdate.setEmail(user.getEmail());
+        entityManager.merge(userToUpdate);
     }
 
     @Override
     @Transactional
     public void delete(int id) {
-        User user = showUser(id);
-        if (user != null) {
-            entityManager.remove(user);
-        }
+        entityManager.remove(entityManager.find(User.class, id))/* ? showUser(id) : entityManager.merge(showUser(id)))*/;
     }
 
 }

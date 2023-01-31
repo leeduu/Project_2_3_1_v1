@@ -1,31 +1,35 @@
 package web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
+import web.service.UserService;
 import web.service.UserServiceImpl;
 
+import javax.transaction.SystemException;
 import java.sql.SQLException;
 
 @Controller
+//@RequestMapping("/")
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping()   //показывает всех юзеров, по умолчанию
-    public String showUsers(Model model) throws SQLException {
-        model.addAttribute("showUsers", userServiceImpl.showUsers());
+    public String showUsers(Model model) throws SQLException, SystemException {
+        model.addAttribute("showUsers", userService.showUsers());
     return "users";
     }
 
     @GetMapping("/show/{id}")   //показывает детали одного юзера
     public String showUser(Model model, @PathVariable("id") int id) {
-        model.addAttribute("showUser", userServiceImpl.showUser(id));
+        model.addAttribute("showUser", userService.showUser(id));
         return "show";
     }
 
@@ -37,25 +41,25 @@ public class UserController {
 
     @PostMapping(value = "/new")    //сохранение нового юзера и показ всех юзеров
     public String newUser(@ModelAttribute("newUser")User user) throws SQLException {
-        userServiceImpl.save(user);
+        userService.save(user);
         return "redirect:/";
     }
 
     @GetMapping("/update/{id}") //форма апдейта юзера
     public String updateUser(Model model, @PathVariable("id") int id) {
-        model.addAttribute("updateUser", userServiceImpl.showUser(id));
+        model.addAttribute("updateUser", userService.showUser(id));
         return("update");
     }
 
     @PatchMapping("/update/{id}")   //апдейт юзера и показ всех юзеров
     public String update(@ModelAttribute("updatedUser") User user, @PathVariable("id") int id) {
-        userServiceImpl.update(id, user);
+        userService.update(id, user);
         return "redirect:/";
     }
 
     @DeleteMapping("/show/{id}")    //удаление юзера
     public String deleteUser(@PathVariable("id") int id) {
-        userServiceImpl.delete(id);
+        userService.delete(id);
         return "redirect:/";
     }
 }
