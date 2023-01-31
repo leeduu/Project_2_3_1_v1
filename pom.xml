@@ -143,6 +143,7 @@
           <target>17</target>
         </configuration>
       </plugin>
+
     </plugins>
     <finalName>project_1</finalName>
   </build>

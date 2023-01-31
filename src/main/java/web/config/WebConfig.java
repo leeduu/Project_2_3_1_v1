@@ -17,7 +17,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 public class WebConfig implements WebMvcConfigurer { //равноценно отдельному файлу xml
 
     private final ApplicationContext applicationContext;
-    @Autowired
+
     public WebConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
