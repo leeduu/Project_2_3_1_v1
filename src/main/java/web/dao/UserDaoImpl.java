@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> showUsers() {
-        return entityManager.createQuery("select u from User u", User.class).getResultList();
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
 
     @Override
@@ -24,25 +24,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public void save(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional
     public void update(int id, User user) {
         User userToUpdate = showUser(id);
         userToUpdate.setFirst_name(user.getFirst_name());
         userToUpdate.setLast_name(user.getLast_name());
         userToUpdate.setEmail(user.getEmail());
+        userToUpdate.setId((int) user.getId());
         entityManager.merge(userToUpdate);
     }
 
     @Override
-    @Transactional
     public void delete(int id) {
-        entityManager.remove(entityManager.find(User.class, id))/* ? showUser(id) : entityManager.merge(showUser(id)))*/;
+        entityManager.remove(entityManager.find(User.class, id));
     }
 
 }

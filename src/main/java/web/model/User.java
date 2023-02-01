@@ -17,11 +17,11 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    public User(String first_name, String last_name, String email/*, int id*/) {
+    public User(String first_name, String last_name, String email, int id) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
-        //this.id = id;
+        this.id = id;
     }
 
     public User() {}
@@ -77,6 +77,7 @@ public class User {
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +
+                ", id='" + id +
                 '}';
     }
 }
